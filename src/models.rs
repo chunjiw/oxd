@@ -16,8 +16,10 @@ impl fmt::Display for Sense {
         for definition in &self.definitions {
             writeln!(f, "{}", definition)?;
         }
-        for example in &self.examples {
-            writeln!(f, "\"{}\"", example.text)?;
+        if let Some(examples) = &self.examples {
+            for example in examples {
+                writeln!(f, "\"{}\"", example.text)?;
+            }
         }
         if let Some(subsenses) = &self.subsenses {
             for subsense in subsenses {
@@ -33,7 +35,7 @@ impl fmt::Display for Sense {
 #[derive(Debug, Deserialize)]
 pub struct Sense {
     pub definitions: Vec<String>,
-    pub examples: Vec<Example>,
+    pub examples: Option<Vec<Example>>,
     pub subsenses: Option<Vec<Sense>>,
 }
 
@@ -81,5 +83,5 @@ pub struct LexicalCategory {
 
 #[derive(Debug, Deserialize)]
 pub struct Example {
-    pub text: String
+    pub text: String,
 }
