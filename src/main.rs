@@ -1,4 +1,4 @@
-use http_client::{get_def, Client};
+use oxd::{get_def, Client};
 use std::env;
 
 fn main() {
