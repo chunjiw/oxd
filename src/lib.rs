@@ -24,15 +24,15 @@ fn build_full_url(word: &str) -> Url {
     u.join(word).unwrap()
 }
 
-pub fn get_def(client: Client, word: &str) -> models::RetrieveEntry {
+pub fn get_def(client: &Client, word: &str) -> models::RetrieveEntry {
     let full_url = build_full_url(word);
-    println!("{}", full_url);
+    // println!("{}", full_url);
     let res = client
         .http_client
         .get(full_url)
         .header("app_id", OD_API_CLIENT_ID)
         .header("app_key", OD_API_CLIENT_KEY)
-        .query(&[("fields", "")])
+        .query(&[("fields", "definitions,examples")])
         .send()
         .unwrap();
     let body: models::RetrieveEntry = serde_json::from_reader(res).unwrap();
