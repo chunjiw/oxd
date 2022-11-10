@@ -19,6 +19,11 @@ impl fmt::Display for Sense {
         for example in &self.examples {
             writeln!(f, "\"{}\"", example.text)?;
         }
+        if let Some(subsenses) = &self.subsenses {
+            for subsense in subsenses {
+                writeln!(f, "    {}", subsense)?;
+            }
+        }
         Ok(())
     }
 }
@@ -29,6 +34,7 @@ impl fmt::Display for Sense {
 pub struct Sense {
     pub definitions: Vec<String>,
     pub examples: Vec<Example>,
+    pub subsenses: Option<Vec<Sense>>,
 }
 
 #[derive(Debug, Deserialize)]
