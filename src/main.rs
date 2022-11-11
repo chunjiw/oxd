@@ -9,12 +9,6 @@ fn main() {
 
     for word in &args[1..] {
         let retrieve_entry = get_def(&client, &word);
-        for headword_entry in retrieve_entry.headword_entries {
-            println!("{}", headword_entry.word);
-            for lexical_entry in headword_entry.lexical_entries {
-                lexical_entry.display("");
-            }
-            println!();
-        }
+        retrieve_entry.headword_entries.display("");
     }
 }

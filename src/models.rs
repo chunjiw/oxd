@@ -7,6 +7,14 @@ pub trait StdoutDisplay {
     fn display(&self, prefix: &str);
 }
 
+impl StdoutDisplay for HeadwordEntry {
+    fn display(&self, _prefix: &str) {
+        println!("{}", self.word);
+        self.lexical_entries.display("");
+        println!();
+    }
+}
+
 impl StdoutDisplay for LexicalEntry {
     fn display(&self, _prefix: &str) {
         print!("{} ", self.lexical_category.id.italic());
