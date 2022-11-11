@@ -1,3 +1,4 @@
+use colored::Colorize;
 use serde::Deserialize;
 use serde_json::Value;
 
@@ -38,7 +39,8 @@ impl TerminalShow for Sense {
         if let Some(examples) = &self.examples {
             for example in examples {
                 print!("{prefix}");
-                println!("\"{}\"", example.text);
+                let example_text = format!("\"{}\"", example.text);
+                println!("{}", example_text.italic().blue());
             }
         }
         if let Some(subsenses) = &self.subsenses {
