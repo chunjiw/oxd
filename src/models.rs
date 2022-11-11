@@ -17,7 +17,7 @@ impl StdoutDisplay for HeadwordEntry {
 
 impl StdoutDisplay for LexicalEntry {
     fn display(&self, _prefix: &str) {
-        print!("{} ", self.lexical_category.id.italic());
+        print!("{}  ", self.lexical_category.id.italic());
         self.entries.display("");
     }
 }
@@ -32,6 +32,7 @@ impl StdoutDisplay for Entry {
 
 impl StdoutDisplay for Sense {
     fn display(&self, prefix: &str) {
+        self.domains.display(prefix);
         self.definitions.display(prefix);
         self.examples.display(prefix);
         self.subsenses.display("      ");
@@ -74,6 +75,12 @@ impl StdoutDisplay for Pronunciation {
         if self.phonetic_notation == "IPA" {
             print!("/{}/ ", self.phonetic_spelling)
         }
+    }
+}
+
+impl StdoutDisplay for Domain {
+    fn display(&self, prefix: &str) {
+        println!("{}[{}] ", prefix, self.text);
     }
 }
 

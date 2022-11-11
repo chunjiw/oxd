@@ -32,7 +32,7 @@ pub fn get_def(client: &Client, word: &str) -> models::RetrieveEntry {
         .get(full_url)
         .header("app_id", OD_API_CLIENT_ID)
         .header("app_key", OD_API_CLIENT_KEY)
-        .query(&[("fields", "definitions,examples,pronunciations")])
+        .query(&[("fields", "definitions,examples,pronunciations,domains")])
         .send()
         .unwrap();
     let body: models::RetrieveEntry = serde_json::from_reader(res).unwrap();
