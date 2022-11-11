@@ -9,7 +9,7 @@ pub trait TerminalShow {
 
 impl TerminalShow for LexicalEntry {
     fn show(&self, _indent: bool) {
-        print!("{} ", self.lexical_category.id);
+        print!("{} ", self.lexical_category.id.italic());
         for entry in &self.entries {
             entry.show(false);
         }
