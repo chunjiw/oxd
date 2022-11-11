@@ -8,18 +8,29 @@ pub trait TerminalShow {
 
 impl TerminalShow for LexicalEntry {
     fn show(&self, _indent: bool) {
-        println!("{}", self.lexical_category.text);
+        print!("{} ", self.lexical_category.id);
         for entry in &self.entries {
-            for sense in &entry.senses {
-                sense.show(false);
+            entry.show(false);
+        }
+    }
+}
+
+impl TerminalShow for Entry {
+    fn show(&self, _indent: bool) {
+        for pronunciation in &self.pronunciations {
+            if pronunciation.phonetic_notation == "IPA" {
+                println!("/{}/", pronunciation.phonetic_spelling)
             }
+        }
+        for sense in &self.senses {
+            sense.show(false);
         }
     }
 }
 
 impl TerminalShow for Sense {
     fn show(&self, indent: bool) {
-        let prefix = if indent { "    " } else { "" };
+        let prefix = if indent { "      " } else { "  " };
         for definition in &self.definitions {
             print!("{prefix}");
             println!("{}", definition);
@@ -38,7 +49,17 @@ impl TerminalShow for Sense {
     }
 }
 
-// Sense <- Entry <- LexicalEntry <- HeadwordEntry <- RetrieveEntry
+/*
+Sense { [definitions], [examples] }
+  ^
+Entry { [Pronunciation] }
+  ^
+LexicalEntry { text, language, LexicalCategory }
+  ^
+HeadwordEntry { id, word, type, language }
+  ^
+RetrieveEntry { id, word, metadata }
+*/
 
 #[derive(Debug, Deserialize)]
 pub struct Sense {
@@ -50,6 +71,7 @@ pub struct Sense {
 #[derive(Debug, Deserialize)]
 pub struct Entry {
     pub senses: Vec<Sense>,
+    pub pronunciations: Vec<Pronunciation>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -92,4 +114,12 @@ pub struct LexicalCategory {
 #[derive(Debug, Deserialize)]
 pub struct Example {
     pub text: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Pronunciation {
+    #[serde(rename = "phoneticSpelling")]
+    pub phonetic_spelling: String,
+    #[serde(rename = "phoneticNotation")]
+    pub phonetic_notation: String,
 }
