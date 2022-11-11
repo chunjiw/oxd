@@ -1,9 +1,25 @@
+/*! # A series of structs modeling OD API retrieve entries
+ * Struct hierarchy:
+ * - [Sense] { _definitions_, [_examples_](Example), [_subsenses_](Sense), [_domains_](Domain), _cross_reference_markers_ }
+ * -   ^
+ * - [Entry] { [pronunciations](Pronunciation) }
+ * -   ^
+ * - [LexicalEntry] { text, language, [lexical_category](LexicalCategory) }
+ * -   ^
+ * - [HeadwordEntry] { id, word, type, language }
+ * -   ^
+ * - [RetrieveEntry] { id, word, metadata }
+ *
+ * Italic fields are optional.
+ */
+
 use colored::Colorize;
 use serde::Deserialize;
 use serde_json::Value;
 
-/// trait TerminalShow
+/// # Display trait to display nicely onto stdout.
 pub trait StdoutDisplay {
+    /// Pass in `prefix` to indent definitions and examples.
     fn display(&self, prefix: &str);
 }
 
@@ -40,7 +56,7 @@ impl StdoutDisplay for Sense {
     }
 }
 
-/// trait StdoutDisplay works for Option<T> as long as the trait is implemented for T.
+/// StdoutDisplay trait works for Option<T: StdoutDisplay>.
 impl<T: StdoutDisplay> StdoutDisplay for Option<T> {
     fn display(&self, indent: &str) {
         if let Some(value) = &self {
@@ -49,7 +65,7 @@ impl<T: StdoutDisplay> StdoutDisplay for Option<T> {
     }
 }
 
-/// trait StdoutDisplay works for Vec<T> as long as the trait is implemented for T
+/// StdoutDisplay trait works for Vec<T: StdoutDisplay>.
 impl<T: StdoutDisplay> StdoutDisplay for Vec<T> {
     fn display(&self, indent: &str) {
         for value in self {
@@ -85,17 +101,7 @@ impl StdoutDisplay for Domain {
     }
 }
 
-/*
-Sense { [definitions], [examples] }
-  ^
-Entry { [Pronunciation] }
-  ^
-LexicalEntry { text, language, LexicalCategory }
-  ^
-HeadwordEntry { id, word, type, language }
-  ^
-RetrieveEntry { id, word, metadata }
-*/
+// Structs
 
 #[derive(Debug, Deserialize)]
 pub struct Sense {
