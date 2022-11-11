@@ -12,8 +12,9 @@ fn main() {
         for headword_entry in retrieve_entry.headword_entries {
             println!("{}", headword_entry.word);
             for lexical_entry in headword_entry.lexical_entries {
-                lexical_entry.display(false);
+                lexical_entry.display("");
             }
+            println!();
         }
     }
 }

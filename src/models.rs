@@ -4,49 +4,67 @@ use serde_json::Value;
 
 /// trait TerminalShow
 pub trait StdoutDisplay {
-    fn display(&self, indent: bool);
+    fn display(&self, prefix: &str);
 }
 
 impl StdoutDisplay for LexicalEntry {
-    fn display(&self, _indent: bool) {
+    fn display(&self, _prefix: &str) {
         print!("{} ", self.lexical_category.id.italic());
-        for entry in &self.entries {
-            entry.display(false);
-        }
+        self.entries.display("");
     }
 }
 
 impl StdoutDisplay for Entry {
-    fn display(&self, _indent: bool) {
-        for pronunciation in &self.pronunciations {
-            if pronunciation.phonetic_notation == "IPA" {
-                print!("/{}/ ", pronunciation.phonetic_spelling)
-            }
-        }
-        for sense in &self.senses {
-            sense.display(false);
-        }
+    fn display(&self, _prefix: &str) {
+        self.pronunciations.display("");
+        println!();
+        self.senses.display("  ");
     }
 }
 
 impl StdoutDisplay for Sense {
-    fn display(&self, indent: bool) {
-        let prefix = if indent { "      " } else { "  " };
-        for definition in &self.definitions {
-            print!("\n{prefix}");
-            println!("{}", definition);
+    fn display(&self, prefix: &str) {
+        self.definitions.display(prefix);
+        self.examples.display(prefix);
+        self.subsenses.display("      ");
+    }
+}
+
+/// trait StdoutDisplay works for Option<T> as long as the trait is implemented for T.
+impl<T: StdoutDisplay> StdoutDisplay for Option<T> {
+    fn display(&self, indent: &str) {
+        if let Some(value) = &self {
+            value.display(indent);
         }
-        if let Some(examples) = &self.examples {
-            for example in examples {
-                print!("{prefix}");
-                let example_text = format!("\"{}\"", example.text);
-                println!("{}", example_text.italic().blue());
-            }
+    }
+}
+
+/// trait StdoutDisplay works for Vec<T> as long as the trait is implemented for T
+impl<T: StdoutDisplay> StdoutDisplay for Vec<T> {
+    fn display(&self, indent: &str) {
+        for value in self {
+            value.display(indent);
         }
-        if let Some(subsenses) = &self.subsenses {
-            for subsense in subsenses {
-                subsense.display(true);
-            }
+    }
+}
+
+impl StdoutDisplay for String {
+    fn display(&self, prefix: &str) {
+        println!("{prefix}{self}");
+    }
+}
+
+impl StdoutDisplay for Example {
+    fn display(&self, prefix: &str) {
+        let text = format!("\"{}\"", self.text.trim());
+        println!("{}{}", prefix, text.italic().blue());
+    }
+}
+
+impl StdoutDisplay for Pronunciation {
+    fn display(&self, _prefix: &str) {
+        if self.phonetic_notation == "IPA" {
+            print!("/{}/ ", self.phonetic_spelling)
         }
     }
 }
@@ -65,9 +83,10 @@ RetrieveEntry { id, word, metadata }
 
 #[derive(Debug, Deserialize)]
 pub struct Sense {
-    pub definitions: Vec<String>,
+    pub definitions: Option<Vec<String>>,
     pub examples: Option<Vec<Example>>,
     pub subsenses: Option<Vec<Sense>>,
+    pub domains: Option<Vec<Domain>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -124,4 +143,10 @@ pub struct Pronunciation {
     pub phonetic_spelling: String,
     #[serde(rename = "phoneticNotation")]
     pub phonetic_notation: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Domain {
+    pub id: String,
+    pub text: String,
 }
