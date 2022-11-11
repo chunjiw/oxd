@@ -34,6 +34,7 @@ impl StdoutDisplay for Sense {
     fn display(&self, prefix: &str) {
         self.domains.display(prefix);
         self.definitions.display(prefix);
+        self.cross_reference_markers.display(prefix);
         self.examples.display(prefix);
         self.subsenses.display("      ");
     }
@@ -102,6 +103,8 @@ pub struct Sense {
     pub examples: Option<Vec<Example>>,
     pub subsenses: Option<Vec<Sense>>,
     pub domains: Option<Vec<Domain>>,
+    #[serde(rename = "crossReferenceMarkers")]
+    pub cross_reference_markers: Option<Vec<String>>,
 }
 
 #[derive(Debug, Deserialize)]
