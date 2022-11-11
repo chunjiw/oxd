@@ -1,32 +1,37 @@
 use serde::Deserialize;
 use serde_json::Value;
-use std::fmt;
 
-// impl Display
+/// trait TerminalShow
+pub trait TerminalShow {
+    fn show(&self, indent: bool);
+}
 
-impl fmt::Display for LexicalEntry {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let _ = writeln!(f, "{}", self.lexical_category.text);
-        write!(f, "{}", self.entries[0].senses[0])
+impl TerminalShow for LexicalEntry {
+    fn show(&self, _indent: bool) {
+        println!("{}", self.lexical_category.text);
+        let sense: &Sense = &self.entries[0].senses[0];
+        sense.show(false);
     }
 }
 
-impl fmt::Display for Sense {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl TerminalShow for Sense {
+    fn show(&self, indent: bool) {
+        let prefix = if indent { "    " } else { "" };
         for definition in &self.definitions {
-            writeln!(f, "{}", definition)?;
+            print!("{prefix}");
+            println!("{}", definition);
         }
         if let Some(examples) = &self.examples {
             for example in examples {
-                writeln!(f, "\"{}\"", example.text)?;
+                print!("{prefix}");
+                println!("\"{}\"", example.text);
             }
         }
         if let Some(subsenses) = &self.subsenses {
             for subsense in subsenses {
-                writeln!(f, "    {}", subsense)?;
+                subsense.show(true);
             }
         }
-        Ok(())
     }
 }
 

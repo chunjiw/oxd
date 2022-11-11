@@ -1,6 +1,6 @@
 use url::Url;
 
-mod models;
+pub mod models;
 
 const OD_API_BASE_URL: &str = "https://od-api.oxforddictionaries.com/api/v2/";
 const OD_API_CLIENT_ID: &str = "5c40050a";
