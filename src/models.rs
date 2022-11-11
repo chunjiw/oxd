@@ -3,37 +3,37 @@ use serde::Deserialize;
 use serde_json::Value;
 
 /// trait TerminalShow
-pub trait TerminalShow {
-    fn show(&self, indent: bool);
+pub trait StdoutDisplay {
+    fn display(&self, indent: bool);
 }
 
-impl TerminalShow for LexicalEntry {
-    fn show(&self, _indent: bool) {
+impl StdoutDisplay for LexicalEntry {
+    fn display(&self, _indent: bool) {
         print!("{} ", self.lexical_category.id.italic());
         for entry in &self.entries {
-            entry.show(false);
+            entry.display(false);
         }
     }
 }
 
-impl TerminalShow for Entry {
-    fn show(&self, _indent: bool) {
+impl StdoutDisplay for Entry {
+    fn display(&self, _indent: bool) {
         for pronunciation in &self.pronunciations {
             if pronunciation.phonetic_notation == "IPA" {
-                println!("/{}/", pronunciation.phonetic_spelling)
+                print!("/{}/ ", pronunciation.phonetic_spelling)
             }
         }
         for sense in &self.senses {
-            sense.show(false);
+            sense.display(false);
         }
     }
 }
 
-impl TerminalShow for Sense {
-    fn show(&self, indent: bool) {
+impl StdoutDisplay for Sense {
+    fn display(&self, indent: bool) {
         let prefix = if indent { "      " } else { "  " };
         for definition in &self.definitions {
-            print!("{prefix}");
+            print!("\n{prefix}");
             println!("{}", definition);
         }
         if let Some(examples) = &self.examples {
@@ -45,7 +45,7 @@ impl TerminalShow for Sense {
         }
         if let Some(subsenses) = &self.subsenses {
             for subsense in subsenses {
-                subsense.show(true);
+                subsense.display(true);
             }
         }
     }

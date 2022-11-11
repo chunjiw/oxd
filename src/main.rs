@@ -1,4 +1,4 @@
-use oxd::models::TerminalShow;
+use oxd::models::StdoutDisplay;
 use oxd::{get_def, Client};
 use std::env;
 
@@ -12,7 +12,7 @@ fn main() {
         for headword_entry in retrieve_entry.headword_entries {
             println!("{}", headword_entry.word);
             for lexical_entry in headword_entry.lexical_entries {
-                lexical_entry.show(false);
+                lexical_entry.display(false);
             }
         }
     }
