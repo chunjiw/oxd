@@ -9,8 +9,11 @@ pub trait TerminalShow {
 impl TerminalShow for LexicalEntry {
     fn show(&self, _indent: bool) {
         println!("{}", self.lexical_category.text);
-        let sense: &Sense = &self.entries[0].senses[0];
-        sense.show(false);
+        for entry in &self.entries {
+            for sense in &entry.senses {
+                sense.show(false);
+            }
+        }
     }
 }
 
