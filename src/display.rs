@@ -16,6 +16,9 @@ impl Display for HeadwordEntry {
 
 impl Display for LexicalEntry {
     fn display(&self, canvas: &mut String) {
+        if self.lexical_category.id == "other" {
+            return;
+        }
         write!(canvas, "{}  ", self.lexical_category.id.italic()).unwrap();
         self.entries.display(canvas);
     }
