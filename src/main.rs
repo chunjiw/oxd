@@ -17,7 +17,8 @@ fn main() {
 
     for word in &args[1..] {
         // println!("Looking up {}", word.to_lowercase());
-        let retrieve_entry = get_def(&client, &word);
-        retrieve_entry.headword_entries.display("");
+        if let Some(retrieve_entry) = get_def(&client, &word) {
+            retrieve_entry.headword_entries.display("");
+        }
     }
 }
