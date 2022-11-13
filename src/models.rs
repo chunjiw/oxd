@@ -83,6 +83,8 @@ pub struct Pronunciation {
     pub phonetic_spelling: String,
     #[serde(rename = "phoneticNotation")]
     pub phonetic_notation: String,
+    #[serde(rename = "audioFile")]
+    pub audio_file: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]

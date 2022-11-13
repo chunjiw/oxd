@@ -1,8 +1,11 @@
-use display::Display;
 use oxd::{build_client, get_def};
 use std::{env, process};
 
+use crate::display::Display;
+use crate::pronounce::Pronounce;
+
 mod display;
+mod pronounce;
 
 fn main() {
     let app_id = env::var("OD_API_APP_ID").unwrap_or_else(|err| {
@@ -17,14 +20,12 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let client = build_client(app_id, app_key);
 
-    let mut canvas = String::new();
-
     for word in &args[1..] {
-        // println!("Looking up {}", word.to_lowercase());
         if let Some(retrieve_entry) = get_def(&client, &word) {
+            let mut canvas = String::new();
             retrieve_entry.headword_entries.display(&mut canvas);
+            println!("{canvas}");
+            retrieve_entry.headword_entries.pronounce();
         }
     }
-
-    println!("{canvas}");
 }
