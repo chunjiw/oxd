@@ -8,7 +8,7 @@
  * -   ^
  * - [HeadwordEntry] { id, word, type, language }
  * -   ^
- * - [RetrieveEntry] { id, word, metadata }
+ * - [RetrieveEntry] { _id_, _word_, metadata }
  *
  * Italic fields are optional.
  */
@@ -141,11 +141,11 @@ pub struct HeadwordEntry {
 
 #[derive(Debug, Deserialize)]
 pub struct RetrieveEntry {
-    pub id: String,
+    pub id: Option<String>,
     pub metadata: Value,
     #[serde(rename = "results")]
     pub headword_entries: Vec<HeadwordEntry>,
-    pub word: String,
+    pub word: Option<String>,
 }
 
 // Structs that have no struct fields
