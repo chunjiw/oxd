@@ -1,6 +1,6 @@
 /*! # A series of structs modeling OD API retrieve entries
  * Struct hierarchy:
- * - [Sense] { _definitions_, [_examples_](Example), [_subsenses_](Sense), [_domains_](Domain), _cross_reference_markers_ }
+ * - [Sense] { [_domains_](Domain), [_registers_](Register), _definitions_, _cross_reference_markers_, [_examples_](Example), [_subsenses_](Sense) }
  * -   ^
  * - [Entry] { [pronunciations](Pronunciation) }
  * -   ^
@@ -48,7 +48,21 @@ impl StdoutDisplay for Entry {
 
 impl StdoutDisplay for Sense {
     fn display(&self, prefix: &str) {
+        let mut newline = false;
+        if let Some(_domains) = &self.domains {
+            newline = true;
+        }
+        if let Some(_registers) = &self.registers {
+            newline = true;
+        }
+        if newline {
+            print!("{prefix}");
+        }
         self.domains.display(prefix);
+        self.registers.display(prefix);
+        if newline {
+            println!();
+        }
         self.definitions.display(prefix);
         self.cross_reference_markers.display(prefix);
         self.examples.display(prefix);
@@ -96,8 +110,14 @@ impl StdoutDisplay for Pronunciation {
 }
 
 impl StdoutDisplay for Domain {
-    fn display(&self, prefix: &str) {
-        println!("{}[{}] ", prefix, self.text);
+    fn display(&self, _prefix: &str) {
+        print!("[{}] ", self.text);
+    }
+}
+
+impl StdoutDisplay for Register {
+    fn display(&self, _prefix: &str) {
+        print!("[{}] ", self.text);
     }
 }
 
@@ -111,6 +131,7 @@ pub struct Sense {
     pub domains: Option<Vec<Domain>>,
     #[serde(rename = "crossReferenceMarkers")]
     pub cross_reference_markers: Option<Vec<String>>,
+    registers: Option<Vec<Register>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -171,6 +192,12 @@ pub struct Pronunciation {
 
 #[derive(Debug, Deserialize)]
 pub struct Domain {
+    pub id: String,
+    pub text: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Register {
     pub id: String,
     pub text: String,
 }

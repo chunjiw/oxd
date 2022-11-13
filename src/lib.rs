@@ -29,7 +29,7 @@ pub fn get_def(client: &blocking::Client, word: &str) -> Option<models::Retrieve
     let full_url = build_full_url(word);
     let res = client.get(full_url).send().unwrap();
     if res.status() != StatusCode::OK {
-        eprintln!("Get {} from Oxford Dictionary API", res.status());
+        eprintln!("Get {} from OD API when querying {}", res.status(), word);
         return None;
     }
     let body: models::RetrieveEntry = serde_json::from_reader(res).unwrap();
