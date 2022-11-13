@@ -27,6 +27,7 @@ impl Display for LexicalEntry {
 impl Display for Entry {
     fn display(&self, canvas: &mut String) {
         self.pronunciations.display(canvas);
+        self.variant_forms.display(canvas);
         writeln!(canvas).unwrap();
         self.senses.display(canvas);
     }
@@ -78,6 +79,16 @@ impl Display for Example {
     fn display(&self, canvas: &mut String) {
         let text = format!("\"{}\"", self.text.trim());
         writeln!(canvas, "{}", text.italic().blue()).unwrap();
+    }
+}
+
+impl Display for VariantForm {
+    fn display(&self, canvas: &mut String) {
+        let tag = match &self.regions {
+            Some(regions) => format!(" [{}]", regions[0].text),
+            None => String::new(),
+        };
+        write!(canvas, " (also {}{}) ", self.text, tag).unwrap();
     }
 }
 

@@ -2,7 +2,7 @@
  * Struct hierarchy:
  * - [_Sense_](Sense) { [_domains_](Domain), [_registers_](Register), _definitions_, _cross_reference_markers_, [_examples_](Example), [_subsenses_](Sense) }
  * -   ^
- * - [Entry] { [_pronunciations_](Pronunciation) }
+ * - [Entry] { [_pronunciations_](Pronunciation), [_variant_forms_](VariantForm) }
  * -   ^
  * - [LexicalEntry] { text, language, [lexical_category](LexicalCategory) }
  * -   ^
@@ -30,9 +30,17 @@ pub struct Sense {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct VariantForm {
+    pub regions: Option<Vec<Region>>,
+    pub text: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Entry {
     pub senses: Option<Vec<Sense>>,
     pub pronunciations: Option<Vec<Pronunciation>>,
+    #[serde(rename = "variantForms")]
+    pub variant_forms: Option<Vec<VariantForm>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -95,6 +103,12 @@ pub struct Domain {
 
 #[derive(Debug, Deserialize)]
 pub struct Register {
+    pub id: String,
+    pub text: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Region {
     pub id: String,
     pub text: String,
 }
