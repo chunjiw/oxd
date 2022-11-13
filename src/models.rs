@@ -1,8 +1,8 @@
 /*! # A series of structs modeling OD API retrieve entries
  * Struct hierarchy:
- * - [Sense] { [_domains_](Domain), [_registers_](Register), _definitions_, _cross_reference_markers_, [_examples_](Example), [_subsenses_](Sense) }
+ * - [_Sense_](Sense) { [_domains_](Domain), [_registers_](Register), _definitions_, _cross_reference_markers_, [_examples_](Example), [_subsenses_](Sense) }
  * -   ^
- * - [Entry] { [pronunciations](Pronunciation) }
+ * - [Entry] { [_pronunciations_](Pronunciation) }
  * -   ^
  * - [LexicalEntry] { text, language, [lexical_category](LexicalCategory) }
  * -   ^
@@ -13,113 +13,8 @@
  * Italic fields are optional.
  */
 
-use colored::Colorize;
 use serde::Deserialize;
 use serde_json::Value;
-
-/// # Display trait to display nicely onto stdout.
-pub trait StdoutDisplay {
-    /// Pass in `prefix` to indent definitions and examples.
-    fn display(&self, prefix: &str);
-}
-
-impl StdoutDisplay for HeadwordEntry {
-    fn display(&self, _prefix: &str) {
-        println!("{}", self.word);
-        self.lexical_entries.display("");
-        println!();
-    }
-}
-
-impl StdoutDisplay for LexicalEntry {
-    fn display(&self, _prefix: &str) {
-        print!("{}  ", self.lexical_category.id.italic());
-        self.entries.display("");
-    }
-}
-
-impl StdoutDisplay for Entry {
-    fn display(&self, _prefix: &str) {
-        self.pronunciations.display("");
-        println!();
-        self.senses.display("  ");
-    }
-}
-
-impl StdoutDisplay for Sense {
-    fn display(&self, prefix: &str) {
-        let mut newline = false;
-        if let Some(_domains) = &self.domains {
-            newline = true;
-        }
-        if let Some(_registers) = &self.registers {
-            newline = true;
-        }
-        if newline {
-            print!("{prefix}");
-        }
-        self.domains.display(prefix);
-        self.registers.display(prefix);
-        if newline {
-            println!();
-        }
-        self.definitions.display(prefix);
-        self.cross_reference_markers.display(prefix);
-        self.examples.display(prefix);
-        self.subsenses.display("      ");
-    }
-}
-
-/// StdoutDisplay trait works for Option<T: StdoutDisplay>.
-impl<T: StdoutDisplay> StdoutDisplay for Option<T> {
-    fn display(&self, indent: &str) {
-        if let Some(value) = &self {
-            value.display(indent);
-        }
-    }
-}
-
-/// StdoutDisplay trait works for Vec<T: StdoutDisplay>.
-impl<T: StdoutDisplay> StdoutDisplay for Vec<T> {
-    fn display(&self, indent: &str) {
-        for value in self {
-            value.display(indent);
-        }
-    }
-}
-
-impl StdoutDisplay for String {
-    fn display(&self, prefix: &str) {
-        println!("{prefix}{self}");
-    }
-}
-
-impl StdoutDisplay for Example {
-    fn display(&self, prefix: &str) {
-        let text = format!("\"{}\"", self.text.trim());
-        println!("{}{}", prefix, text.italic().blue());
-    }
-}
-
-impl StdoutDisplay for Pronunciation {
-    fn display(&self, _prefix: &str) {
-        if self.phonetic_notation == "IPA" {
-            print!("/{}/ ", self.phonetic_spelling)
-        }
-    }
-}
-
-impl StdoutDisplay for Domain {
-    fn display(&self, _prefix: &str) {
-        print!("[{}] ", self.text);
-    }
-}
-
-impl StdoutDisplay for Register {
-    fn display(&self, _prefix: &str) {
-        print!("[{}] ", self.text);
-    }
-}
 
 // Structs
 
@@ -131,13 +26,13 @@ pub struct Sense {
     pub domains: Option<Vec<Domain>>,
     #[serde(rename = "crossReferenceMarkers")]
     pub cross_reference_markers: Option<Vec<String>>,
-    registers: Option<Vec<Register>>,
+    pub registers: Option<Vec<Register>>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Entry {
-    pub senses: Vec<Sense>,
-    pub pronunciations: Vec<Pronunciation>,
+    pub senses: Option<Vec<Sense>>,
+    pub pronunciations: Option<Vec<Pronunciation>>,
 }
 
 #[derive(Debug, Deserialize)]
