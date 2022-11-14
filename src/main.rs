@@ -5,11 +5,11 @@ use std::{env, process};
 
 fn main() {
     let app_id = env::var("OD_API_APP_ID").unwrap_or_else(|err| {
-        println!("Problem reading Oxford Dictionary API credentials: {err}");
+        println!("Problem reading Oxford Dictionary API App ID: {err}");
         process::exit(1);
     });
     let app_key = env::var("OD_API_APP_KEY").unwrap_or_else(|err| {
-        println!("Problem reading Oxford Dictionary API credentials: {err}");
+        println!("Problem reading Oxford Dictionary API App KEY: {err}");
         process::exit(1);
     });
 
