@@ -1,6 +1,4 @@
 /*!
-# Oxd
-
 Oxd is a client library for the Oxford Dictionary API.
 It provides [a series of structs](models) modeling entries returned from the API,
 a function [get_entry] to get entries from the API,
@@ -29,7 +27,7 @@ let retrieve_entry = get_entry(&client, "rust");
 ### Install
 
 Currently the most convenient way to install oxd is via cargo:
-```rust
+```text
 cargo install oxd
 ```
 After installation, set environment variables `OD_API_APP_ID` and `OD_API_APP_KEY`

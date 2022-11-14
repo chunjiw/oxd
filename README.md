@@ -1,7 +1,5 @@
 # oxd
 
-## Oxd
-
 Oxd is a client library for the Oxford Dictionary API.
 It provides [a series of structs](models) modeling entries returned from the API,
 a function [get_entry] to get entries from the API,
