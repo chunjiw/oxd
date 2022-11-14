@@ -1,7 +1,10 @@
+/*! Display entries */
+
 use crate::models::*;
 use colored::Colorize;
 use std::fmt::Write;
 
+/// A trait to display entries
 pub trait Display {
     fn display(&self, canvas: &mut String);
 }

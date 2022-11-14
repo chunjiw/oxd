@@ -1,8 +1,11 @@
+/*! Fetch and play pronunciation audio files */
+
 use crate::models::*;
 use reqwest::blocking;
 use rodio::{Decoder, OutputStream, Sink};
 use std::io::Cursor;
 
+/// A trait to fetch and play pronunciation audio files
 pub trait Pronounce {
     fn pronounce(&self) {}
 }
