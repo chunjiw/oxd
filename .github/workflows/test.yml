@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Installing needed Ubuntu dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libasound2-dev
     - uses: actions/checkout@v3
     - name: Build
       run: cargo build --verbose
