@@ -51,8 +51,20 @@ impl Pronounce for LexicalEntry {
     }
 }
 
+/// Play the [Pronunciation] in the first [LexicalEntry] in this [HeadwordEntry]
+///
+/// It looks like all the [Pronunciation]s in the same [HeadwordEntry] stays the same.
 impl Pronounce for HeadwordEntry {
     fn pronounce(&self) {
-        self.lexical_entries.pronounce();
+        if self.lexical_entries.len() == 0 {
+            return;
+        }
+        self.lexical_entries[0].pronounce();
+    }
+}
+
+impl Pronounce for RetrieveEntry {
+    fn pronounce(&self) {
+        self.headword_entries.pronounce();
     }
 }

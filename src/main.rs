@@ -19,9 +19,9 @@ fn main() {
     for word in &args[1..] {
         if let Some(retrieve_entry) = get_entry(&client, &word) {
             let mut canvas = String::new();
-            retrieve_entry.headword_entries.display(&mut canvas);
+            retrieve_entry.display(&mut canvas);
             println!("{canvas}");
-            retrieve_entry.headword_entries.pronounce();
+            retrieve_entry.pronounce();
         }
     }
 }

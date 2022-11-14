@@ -9,6 +9,12 @@ pub trait Display {
     fn display(&self, canvas: &mut String);
 }
 
+impl Display for RetrieveEntry {
+    fn display(&self, canvas: &mut String) {
+        self.headword_entries.display(canvas);
+    }
+}
+
 impl Display for HeadwordEntry {
     fn display(&self, canvas: &mut String) {
         writeln!(canvas, "{}", self.word).unwrap();
@@ -22,7 +28,7 @@ impl Display for LexicalEntry {
         if self.lexical_category.id == "other" {
             return;
         }
-        write!(canvas, "{}  ", self.lexical_category.id.italic()).unwrap();
+        write!(canvas, "\n{}  ", self.lexical_category.id.italic()).unwrap();
         self.entries.display(canvas);
     }
 }
