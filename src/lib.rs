@@ -24,8 +24,6 @@ let retrieve_entry = get_entry(&client, "rust");
 
 ## Use as a command line utility
 
-### Install
-
 Currently the most convenient way to install oxd is via cargo:
 ```text
 cargo install oxd
