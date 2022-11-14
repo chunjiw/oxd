@@ -25,7 +25,7 @@ fn build_full_url(word: &str) -> Url {
     url
 }
 
-pub fn get_def(client: &blocking::Client, word: &str) -> Option<models::RetrieveEntry> {
+pub fn get_entry(client: &blocking::Client, word: &str) -> Option<models::RetrieveEntry> {
     let full_url = build_full_url(word);
     let res = client.get(full_url).send().unwrap();
     if res.status() != StatusCode::OK {

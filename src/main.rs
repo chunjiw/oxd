@@ -1,4 +1,4 @@
-use oxd::{build_client, get_def};
+use oxd::{build_client, get_entry};
 use std::{env, process};
 
 use crate::display::Display;
@@ -21,7 +21,7 @@ fn main() {
     let client = build_client(app_id, app_key);
 
     for word in &args[1..] {
-        if let Some(retrieve_entry) = get_def(&client, &word) {
+        if let Some(retrieve_entry) = get_entry(&client, &word) {
             let mut canvas = String::new();
             retrieve_entry.headword_entries.display(&mut canvas);
             println!("{canvas}");
