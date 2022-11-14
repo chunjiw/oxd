@@ -1,4 +1,4 @@
-use oxd::models::*;
+use crate::models::*;
 use reqwest::blocking;
 use rodio::{Decoder, OutputStream, Sink};
 use std::io::Cursor;

@@ -1,7 +1,9 @@
 use reqwest::header::{self, HeaderValue};
 use reqwest::{blocking, StatusCode, Url};
 
+pub mod display;
 pub mod models;
+pub mod pronounce;
 
 const OD_API_BASE_URL: &str = "https://od-api.oxforddictionaries.com/api/v2/";
 

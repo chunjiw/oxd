@@ -1,5 +1,5 @@
+use crate::models::*;
 use colored::Colorize;
-use oxd::models::*;
 use std::fmt::Write;
 
 pub trait Display {
