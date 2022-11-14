@@ -7,7 +7,7 @@ repository = "https://github.com/chunjiw/oxd"
 homepage = "https://github.com/chunjiw/oxd"
 keywords = ["Oxford", "dictionary"]
 readme = "README.md"
-licence = "MIT"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
