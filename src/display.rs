@@ -25,7 +25,7 @@ impl Display for HeadwordEntry {
 
 impl Display for LexicalEntry {
     fn display(&self, canvas: &mut String) {
-        if self.lexical_category.id == "other" {
+        if is_empty_entries(&self.entries) {
             return;
         }
         write!(canvas, "\n{}  ", self.lexical_category.id.italic()).unwrap();
@@ -123,4 +123,10 @@ impl Display for Register {
     fn display(&self, canvas: &mut String) {
         write!(canvas, "[{}] ", self.text).unwrap();
     }
+}
+
+fn is_empty_entries(entries: &Vec<Entry>) -> bool {
+    return entries.iter().all(|entry| {
+        entry.pronunciations.is_none() && entry.senses.is_none() && entry.variant_forms.is_none()
+    });
 }
