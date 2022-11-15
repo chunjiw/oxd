@@ -80,7 +80,11 @@ impl<T: Display> Display for Vec<T> {
 
 impl Display for String {
     fn display(&self, canvas: &mut String) {
-        writeln!(canvas, "{}", self).unwrap();
+        write!(canvas, "{}", self).unwrap();
+        if !self.ends_with('.') {
+            write!(canvas, ".").unwrap();
+        }
+        writeln!(canvas, "").unwrap();
     }
 }
 
