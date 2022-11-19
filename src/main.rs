@@ -9,11 +9,11 @@ use clap::Parser;
 
 fn main() {
     let app_id = env::var("OD_API_APP_ID").unwrap_or_else(|err| {
-        println!("Problem reading Oxford Dictionary API App ID: {err}");
+        eprintln!("Problem reading Oxford Dictionary API App ID: {err}\nGet one at https://developer.oxforddictionaries.com/ and set OD_API_APP_ID.");
         process::exit(1);
     });
     let app_key = env::var("OD_API_APP_KEY").unwrap_or_else(|err| {
-        println!("Problem reading Oxford Dictionary API App KEY: {err}");
+        eprintln!("Problem reading Oxford Dictionary API App KEY: {err}\nGet one at https://developer.oxforddictionaries.com/ and set OD_API_APP_KEY.");
         process::exit(1);
     });
 
