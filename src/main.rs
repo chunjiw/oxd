@@ -8,6 +8,8 @@ use args::OxdArgs;
 use clap::Parser;
 
 fn main() {
+    let args = OxdArgs::parse();
+
     let app_id = env::var("OD_API_APP_ID").unwrap_or_else(|err| {
         eprintln!("Problem reading Oxford Dictionary API App ID: {err}\nGet one at https://developer.oxforddictionaries.com/ and set OD_API_APP_ID.");
         process::exit(1);
@@ -17,7 +19,6 @@ fn main() {
         process::exit(1);
     });
 
-    let args = OxdArgs::parse();
     let client = build_client(app_id, app_key);
 
     if let Some(retrieve_entry) = get_entry(&client, &args.word) {
