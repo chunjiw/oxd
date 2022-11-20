@@ -23,7 +23,7 @@ impl Display for HeadwordEntry {
     fn display(&self, canvas: &mut String) {
         write!(canvas, "{}  ", self.word).unwrap();
         if has_consistent_pronunciation(&self) {
-            // Use assumption "at least one LexicalEntry" and "must only one entry"
+            // Use assumption "at least one `LexicalEntry`" and "must only one `Entry`"
             self.lexical_entries[0].entries[0]
                 .pronunciations
                 .display(canvas);
