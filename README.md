@@ -11,6 +11,19 @@ and a [Pronounce](pronounce::Pronounce) trait to play pronunciation files.
 First you need to go to the [Oxford Dictionary API website](https://developer.oxforddictionaries.com/)
 to get an application id and a key.
 
+### Use as a command line utility
+
+Currently the most convenient way to install oxd is via cargo:
+```
+cargo install oxd
+```
+After installation, set environment variables `OD_API_APP_ID` and `OD_API_APP_KEY`
+to their corresponding values obtained from
+the [Oxford Dictionary API website](https://developer.oxforddictionaries.com/).
+Then just type `oxd rust` to look up the word "rust".
+
+![Screenshot](https://raw.githubusercontent.com/chunjiw/oxd/main/screenshot.png)
+
 ### Use as a library
 
 ```rust
@@ -20,22 +33,9 @@ let app_id = "your_app_id".to_owned();
 let app_key = "your_app_key".to_owned();
 
 let client = build_client(app_id, app_key);
-let retrieve_entry = get_entry(&client, "rust");
+if let Some(retrieve_entry) = get_entry(&client, "rust") {
+    println!("{:#?}", retrieve_entry);
+}
 ```
-
-### Use as a command line utility
-
-#### Install
-
-Currently the most convenient way to install oxd is via cargo:
-```rust
-cargo install oxd
-```
-After installation, set environment variables `OD_API_APP_ID` and `OD_API_APP_KEY`
-to their corresponding values obtained from
-the [Oxford Dictionary API website](https://developer.oxforddictionaries.com/).
-Then just type `oxd rust` to look up the word "rust".
-
-![Screenshot](https://raw.githubusercontent.com/chunjiw/oxd/main/screenshot.png)
 
 License: MIT

@@ -10,21 +10,6 @@ and a [Pronounce](pronounce::Pronounce) trait to play pronunciation files.
 First you need to go to the [Oxford Dictionary API website](https://developer.oxforddictionaries.com/)
 to get an application id and a key.
 
-## Use as a library
-
-```rust
-use oxd::{build_client, get_entry};
-
-let app_id = "your_app_id".to_owned();
-let app_key = "your_app_key".to_owned();
-
-let client = build_client(app_id, app_key);
-if let Some(retrieve_entry) = get_entry(&client, "rust") {
-    println!("{:#?}", retrieve_entry);
-}
-
-```
-
 ## Use as a command line utility
 
 Currently the most convenient way to install oxd is via cargo:
@@ -37,6 +22,20 @@ the [Oxford Dictionary API website](https://developer.oxforddictionaries.com/).
 Then just type `oxd rust` to look up the word "rust".
 
 ![Screenshot](https://raw.githubusercontent.com/chunjiw/oxd/main/screenshot.png)
+
+## Use as a library
+
+```rust
+use oxd::{build_client, get_entry};
+
+let app_id = "your_app_id".to_owned();
+let app_key = "your_app_key".to_owned();
+
+let client = build_client(app_id, app_key);
+if let Some(retrieve_entry) = get_entry(&client, "rust") {
+    println!("{:#?}", retrieve_entry);
+}
+```
 */
 
 use reqwest::header::{self, HeaderValue};
