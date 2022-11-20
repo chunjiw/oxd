@@ -11,13 +11,24 @@ pub trait Display {
 
 impl Display for RetrieveEntry {
     fn display(&self, canvas: &mut String) {
-        self.headword_entries.display(canvas);
+        for headword in &self.headword_entries {
+            let mut c1 = String::new();
+            headword.display(&mut c1);
+            canvas.push_str(&c1);
+        }
     }
 }
 
 impl Display for HeadwordEntry {
     fn display(&self, canvas: &mut String) {
-        writeln!(canvas, "{}", self.word).unwrap();
+        write!(canvas, "{}  ", self.word).unwrap();
+        if has_consistent_pronunciation(&self) {
+            // Use assumption "at least one LexicalEntry" and "must only one entry"
+            self.lexical_entries[0].entries[0]
+                .pronunciations
+                .display(canvas);
+        }
+        writeln!(canvas).unwrap();
         self.lexical_entries.display(canvas);
         writeln!(canvas).unwrap();
     }
@@ -35,7 +46,12 @@ impl Display for LexicalEntry {
 
 impl Display for Entry {
     fn display(&self, canvas: &mut String) {
-        self.pronunciations.display(canvas);
+        let mut lines = canvas.lines();
+        if let Some(head) = lines.nth(0) {
+            if !head.contains('/') {
+                self.pronunciations.display(canvas);
+            }
+        }
         self.variant_forms.display(canvas);
         writeln!(canvas).unwrap();
         self.senses.display(canvas);

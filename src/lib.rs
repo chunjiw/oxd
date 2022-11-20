@@ -19,7 +19,10 @@ let app_id = "your_app_id".to_owned();
 let app_key = "your_app_key".to_owned();
 
 let client = build_client(app_id, app_key);
-let retrieve_entry = get_entry(&client, "rust");
+if let Some(retrieve_entry) = get_entry(&client, "rust") {
+    println!("{:#?}", retrieve_entry);
+}
+
 ```
 
 ## Use as a command line utility

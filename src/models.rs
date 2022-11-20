@@ -112,3 +112,54 @@ pub struct Region {
     pub id: String,
     pub text: String,
 }
+
+// Eq for Pronunciation
+impl PartialEq for Pronunciation {
+    fn eq(&self, other: &Self) -> bool {
+        self.phonetic_notation == other.phonetic_notation
+            && self.phonetic_spelling == other.phonetic_spelling
+    }
+}
+impl Eq for Pronunciation {}
+
+pub fn has_consistent_pronunciation(headword: &HeadwordEntry) -> bool {
+    let lexical_entries = &headword.lexical_entries;
+    let mut pronunciations: Vec<&Vec<Pronunciation>> = Vec::new();
+    for lexical_entry in lexical_entries {
+        for entry in &lexical_entry.entries {
+            if let Some(p) = &entry.pronunciations {
+                pronunciations.push(p);
+            }
+        }
+    }
+    return have_same_elements(pronunciations);
+}
+
+/// Returns whether two vectors have the same elements.
+fn have_same_elements<T: Eq>(vv: Vec<&Vec<T>>) -> bool {
+    if vv.len() <= 1 {
+        return true;
+    }
+    for e1 in vv[0] {
+        for v in &vv[1..] {
+            if !v.contains(&e1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+#[test]
+fn test_have_same_elements() {
+    let v123 = vec![1, 2, 3];
+    let v124 = vec![1, 2, 4];
+    let vv1 = vec![&v123, &v123];
+    let vv2 = vec![&v123];
+    let vv3: Vec<&Vec<isize>> = vec![];
+    let vv4 = vec![&v123, &v124];
+    assert_eq!(have_same_elements(vv1), true);
+    assert_eq!(have_same_elements(vv2), true);
+    assert_eq!(have_same_elements(vv3), true);
+    assert_eq!(have_same_elements(vv4), false);
+}
