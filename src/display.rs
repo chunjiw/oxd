@@ -99,6 +99,9 @@ impl Display for Entry {
 
 impl Display for Sense {
     fn display(&self, output: &mut String) {
+        if is_empty_sense(self) {
+            return;
+        }
         let mut c = String::new();
         self.domains.display(&mut c);
         self.registers.display(&mut c);
@@ -116,6 +119,9 @@ impl Display for Sense {
         write!(output, "{c}").unwrap();
     }
     fn to_html(&self, output: &mut String) {
+        if is_empty_sense(self) {
+            return;
+        }
         write!(output, "<li>").unwrap();
         self.domains.to_html(output);
         self.registers.to_html(output);

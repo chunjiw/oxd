@@ -164,8 +164,14 @@ fn test_have_same_elements() {
     assert_eq!(have_same_elements(vv4), false);
 }
 
+// Helper functions to look at empty entries
+
 pub fn is_empty_entries(entries: &Vec<Entry>) -> bool {
     return entries.iter().all(|entry| {
         entry.pronunciations.is_none() && entry.senses.is_none() && entry.variant_forms.is_none()
     });
+}
+
+pub fn is_empty_sense(sense: &Sense) -> bool {
+    sense.definitions.is_none() && sense.cross_reference_markers.is_none()
 }
