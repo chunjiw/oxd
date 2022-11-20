@@ -124,7 +124,9 @@ impl Display for VariantForm {
 impl Display for Pronunciation {
     fn display(&self, canvas: &mut String) {
         if self.phonetic_notation == "IPA" {
-            write!(canvas, "/{}/ ", self.phonetic_spelling).unwrap();
+            if let Some(spelling) = &self.phonetic_spelling {
+                write!(canvas, "/{}/ ", spelling).unwrap();
+            }
         }
     }
 }

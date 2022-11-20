@@ -88,7 +88,7 @@ pub struct Example {
 #[derive(Debug, Deserialize)]
 pub struct Pronunciation {
     #[serde(rename = "phoneticSpelling")]
-    pub phonetic_spelling: String,
+    pub phonetic_spelling: Option<String>,
     #[serde(rename = "phoneticNotation")]
     pub phonetic_notation: String,
     #[serde(rename = "audioFile")]

@@ -54,6 +54,7 @@ impl Pronounce for LexicalEntry {
 impl Pronounce for HeadwordEntry {
     fn pronounce(&self) {
         if has_consistent_pronunciation(self) {
+            // Use assumption "at least one `LexicalEntry`"
             self.lexical_entries[0].pronounce();
         } else {
             self.lexical_entries.pronounce();
