@@ -163,3 +163,9 @@ fn test_have_same_elements() {
     assert_eq!(have_same_elements(vv3), true);
     assert_eq!(have_same_elements(vv4), false);
 }
+
+pub fn is_empty_entries(entries: &Vec<Entry>) -> bool {
+    return entries.iter().all(|entry| {
+        entry.pronunciations.is_none() && entry.senses.is_none() && entry.variant_forms.is_none()
+    });
+}
