@@ -4,7 +4,7 @@
  * -   ^
  * - [Entry] { [_pronunciations_](Pronunciation), [_variant_forms_](VariantForm) }
  * -   ^
- * - [LexicalEntry] { text, language, [lexical_category](LexicalCategory) }
+ * - [LexicalEntry] { text, language, [lexical_category](LexicalCategory), [_derivative_of_](DerivativeOf) }
  * -   ^
  * - [HeadwordEntry] { id, word, type, language }
  * -   ^
@@ -49,6 +49,8 @@ pub struct LexicalEntry {
     pub language: String,
     #[serde(rename = "lexicalCategory")]
     pub lexical_category: LexicalCategory,
+    #[serde(rename = "derivativeOf")]
+    pub derivative_of: Option<Vec<DerivativeOf>>,
     pub text: String,
 }
 
@@ -109,6 +111,12 @@ pub struct Register {
 
 #[derive(Debug, Deserialize)]
 pub struct Region {
+    pub id: String,
+    pub text: String,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct DerivativeOf {
     pub id: String,
     pub text: String,
 }
@@ -174,4 +182,16 @@ pub fn is_empty_entries(entries: &Vec<Entry>) -> bool {
 
 pub fn is_empty_sense(sense: &Sense) -> bool {
     sense.definitions.is_none() && sense.cross_reference_markers.is_none()
+}
+
+pub fn roots(retrieve_entry: &RetrieveEntry) -> Vec<DerivativeOf> {
+    let mut roots: Vec<DerivativeOf> = vec![];
+    for headword in &retrieve_entry.headword_entries {
+        for lexical_entry in &headword.lexical_entries {
+            if let Some(derivative_ofs) = &lexical_entry.derivative_of {
+                roots.append(&mut derivative_ofs.clone());
+            }
+        }
+    }
+    roots
 }

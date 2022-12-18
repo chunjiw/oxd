@@ -59,6 +59,7 @@ impl Display for LexicalEntry {
             return;
         }
         write!(output, "\n{}  ", self.lexical_category.id.italic()).unwrap();
+        self.derivative_of.display(output);
         self.entries.display(output);
     }
     fn to_html(&self, output: &mut String) {
@@ -205,6 +206,15 @@ impl Display for VariantForm {
             None => String::new(),
         };
         write!(output, " (also {}{}) ", self.text, region).unwrap();
+    }
+}
+
+impl Display for DerivativeOf {
+    fn display(&self, output: &mut String) {
+        write!(output, "\nderivative of {}", self.text).unwrap();
+    }
+    fn to_html(&self, output: &mut String) {
+        write!(output, " derivative of {}", self.text).unwrap();
     }
 }
 

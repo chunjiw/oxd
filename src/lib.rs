@@ -68,7 +68,7 @@ fn build_full_url(word: &str) -> Url {
     url
 }
 
-/// Querys the API and returns the results.
+/// Queries the API and returns a single [RetrieveEntry](models::RetrieveEntry).
 pub fn get_entry(client: &blocking::Client, word: &str) -> Option<models::RetrieveEntry> {
     let full_url = build_full_url(word);
     let res = client.get(full_url).send().unwrap();
@@ -78,4 +78,22 @@ pub fn get_entry(client: &blocking::Client, word: &str) -> Option<models::Retrie
     }
     let body: models::RetrieveEntry = serde_json::from_reader(res).unwrap();
     Some(body)
+}
+
+/// Queries the API and returns a vector of [RetrieveEntry](models::RetrieveEntry)s.
+///
+/// Including possible root forms of this entry.
+pub fn get_entries(client: &blocking::Client, word: &str) -> Vec<models::RetrieveEntry> {
+    let mut entries: Vec<models::RetrieveEntry> = vec![];
+    let Some(entry) = get_entry(client, word) else {
+        return entries;
+    };
+    for root in models::roots(&entry) {
+        let Some(root_entry) = get_entry(client, &root.text) else {
+            continue;
+        };
+        entries.push(root_entry);
+    }
+    entries.push(entry);
+    entries
 }

@@ -1,6 +1,7 @@
 use oxd::display::Display;
+use oxd::models::RetrieveEntry;
 use oxd::pronounce::Pronounce;
-use oxd::{build_client, get_entry};
+use oxd::{build_client, get_entries};
 use std::{env, process};
 
 mod args;
@@ -21,12 +22,16 @@ fn main() {
 
     let client = build_client(app_id, app_key);
 
-    if let Some(retrieve_entry) = get_entry(&client, &args.word) {
-        let mut canvas = String::new();
-        retrieve_entry.display(&mut canvas);
-        println!("{canvas}");
-        if args.sound {
-            retrieve_entry.pronounce();
-        }
+    for retrieve_entry in get_entries(&client, &args.word) {
+        output_entry(retrieve_entry, args.sound);
+    }
+}
+
+fn output_entry(retrieve_entry: RetrieveEntry, sound: bool) {
+    let mut canvas = String::new();
+    retrieve_entry.display(&mut canvas);
+    println!("{canvas}");
+    if sound {
+        retrieve_entry.pronounce();
     }
 }
