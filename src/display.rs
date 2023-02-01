@@ -29,7 +29,7 @@ impl Display for RetrieveEntry {
 
 impl Display for HeadwordEntry {
     fn display(&self, output: &mut String) {
-        write!(output, "{}  ", self.word).unwrap();
+        write!(output, "{}  ", self.word.bold().underline()).unwrap();
         if has_consistent_pronunciation(&self) {
             // Assume "at least one `LexicalEntry`" and "must only one `Entry`"
             self.lexical_entries[0].entries[0]
@@ -37,19 +37,33 @@ impl Display for HeadwordEntry {
                 .display(output);
         }
         writeln!(output).unwrap();
+
         self.lexical_entries.display(output);
+        writeln!(output).unwrap();
+
+        self.origins().iter().for_each(|origin| {
+            write!(output, "[{}]  ", "origin".magenta()).unwrap();
+            origin.display(output);
+        });
         writeln!(output).unwrap();
     }
     fn to_html(&self, output: &mut String) {
-        write!(output, "<p>{}  ", self.word).unwrap();
+        write!(output, "<p><u><b>{}</b></u>  ", self.word).unwrap();
         if has_consistent_pronunciation(&self) {
             // Assume "at least one `LexicalEntry`" and "must only one `Entry`"
             self.lexical_entries[0].entries[0]
                 .pronunciations
                 .to_html(output);
         }
+
         write!(output, "</p>").unwrap();
         self.lexical_entries.to_html(output);
+
+        self.origins().iter().for_each(|origin| {
+            write!(output, "<p>[origin]  ").unwrap();
+            origin.to_html(output);
+        });
+        write!(output, "</p>").unwrap();
     }
 }
 
@@ -58,7 +72,12 @@ impl Display for LexicalEntry {
         if is_empty_entries(&self.entries) {
             return;
         }
-        write!(output, "\n{}  ", self.lexical_category.id.italic()).unwrap();
+        write!(
+            output,
+            "\n{}  ",
+            self.lexical_category.id.italic().magenta()
+        )
+        .unwrap();
         self.derivative_of.display(output);
         self.entries.display(output);
     }
