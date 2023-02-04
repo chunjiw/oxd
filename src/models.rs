@@ -2,7 +2,7 @@
  * Struct hierarchy:
  * - [_Sense_](Sense) { [_domains_](Domain), [_registers_](Register), _definitions_, _cross_reference_markers_, [_examples_](Example), [_subsenses_](Sense) }
  * -   ^
- * - [Entry] { [_pronunciations_](Pronunciation), [_variant_forms_](VariantForm) }
+ * - [Entry] { [_pronunciations_](Pronunciation), [_variant_forms_](VariantForm), _origins_ }
  * -   ^
  * - [LexicalEntry] { text, language, [lexical_category](LexicalCategory), [_derivative_of_](DerivativeOf) }
  * -   ^
@@ -41,6 +41,8 @@ pub struct Entry {
     pub pronunciations: Option<Vec<Pronunciation>>,
     #[serde(rename = "variantForms")]
     pub variant_forms: Option<Vec<VariantForm>>,
+    #[serde(rename = "etymologies")]
+    pub origins: Option<Vec<String>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -194,4 +196,19 @@ pub fn roots(retrieve_entry: &RetrieveEntry) -> Vec<DerivativeOf> {
         }
     }
     roots
+}
+
+impl HeadwordEntry {
+    pub fn origins<'a>(&'a self) -> Vec<&'a String> {
+        self.lexical_entries
+            .iter()
+            .flat_map(|lexical_entry| {
+                lexical_entry
+                    .entries
+                    .iter()
+                    .filter_map(|e| e.origins.as_ref())
+                    .flatten()
+            })
+            .collect()
+    }
 }
